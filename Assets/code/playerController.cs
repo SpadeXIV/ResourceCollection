@@ -1,23 +1,34 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class playerController : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     [Header("移动设置")]
     public float moveSpeed = 5f;
+    public float rotationSpeed = 0.2f;
 
     [Header("场景边界")]
-    public float boundaryX = 8f;
-    public float boundaryZ = 8f;
+    public GameObject groundPlane;
+    public float boundaryOffset = 0.5f;
 
     private Animator animator;
-
+    private float boundaryX;
+    private float boundaryZ;
     private bool isMoving = false;
 
     void Start()
     {
         animator = GetComponent<Animator>();
+        CalculateBoundary();
+    }
+
+    void CalculateBoundary()
+    {
+        if (groundPlane != null)
+        {
+            Vector3 groundScale = groundPlane.transform.localScale;
+            boundaryX = 5f * groundScale.x - boundaryOffset;
+            boundaryZ = 5f * groundScale.z - boundaryOffset;
+        }
     }
 
     void Update()
@@ -41,10 +52,10 @@ public class playerController : MonoBehaviour
         if (currentlyMoving)
         {
             Quaternion targetRotation = Quaternion.LookRotation(movement);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 0.2f);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed);
         }
 
-        // 触发器切换动画状态
+        // 用Trigger切换动画状态
         if (currentlyMoving && !isMoving)
         {
             // 刚开始移动 → 触发Run
