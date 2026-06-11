@@ -23,6 +23,7 @@ public class CollectibleResource : MonoBehaviour
 
     void Collect()
     {
+        InventoryManager.Instance.AddResource(resourceType, 1);
         Debug.Log($"收集了: {resourceType}");
         // 通知生成器这个资源被收集了
         ResourceSpawner.Instance.OnResourceCollected(resourceType, gameObject);

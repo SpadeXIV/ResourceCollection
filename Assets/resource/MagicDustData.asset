@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bff52e61e0c38284b8532c4fe61be01d, type: 3}
   m_Name: MagicDustData
   m_EditorClassIdentifier: 
-  resourceName: 
+  resourceName: "\u9B54\u6CD5\u5C18"
   type: 0
-  icon: {fileID: 0}
-  prefab: {fileID: 0}
-  maxStack: 99
+  Itemicon: {fileID: 0}
+  prefab: {fileID: 6484153708330407886, guid: d833a86067c61dd48bd1d7dcc6f519e1, type: 3}
+  maxStack: 8

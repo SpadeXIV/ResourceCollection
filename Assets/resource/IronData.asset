@@ -15,5 +15,5 @@ MonoBehaviour:
   resourceName: "\u94C1\u77FF"
   type: 0
   Itemicon: {fileID: 0}
-  prefab: {fileID: 0}
-  maxStack: 99
+  prefab: {fileID: 8137377603174405007, guid: ec10e1fa2d599dd4ca4899ccdbce6312, type: 3}
+  maxStack: 8

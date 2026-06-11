@@ -8,10 +8,10 @@ public class ResourceSpawner : MonoBehaviour
 {
     public static ResourceSpawner Instance;
 
-    [Header("资源预制体")]
-    public GameObject woodPrefab;
-    public GameObject ironPrefab;
-    public GameObject magicPrefab;
+    [Header("资源数据")]
+    public ResourceData woodData;
+    public ResourceData ironData;
+    public ResourceData magicDustData;
 
     [Header("场景地面")]
     public GameObject groundPlane;          
@@ -62,13 +62,13 @@ public class ResourceSpawner : MonoBehaviour
     void SpawnInitialResources()
     {
         for (int i = 0; i < woodCount; i++)
-            SpawnResource(woodPrefab, ResourceType.Wood);
+            SpawnResource(woodData.prefab, ResourceType.Wood);
 
         for (int i = 0; i < ironCount; i++)
-            SpawnResource(ironPrefab, ResourceType.Iron);
+            SpawnResource(ironData.prefab, ResourceType.Iron);
 
         for (int i = 0; i < magicCount; i++)
-            SpawnResource(magicPrefab, ResourceType.MagicDust);
+            SpawnResource(magicDustData.prefab, ResourceType.MagicDust);
     }
 
     GameObject SpawnResource(GameObject prefab, ResourceType type)
@@ -80,13 +80,13 @@ public class ResourceSpawner : MonoBehaviour
         activeResources[type].Add(obj);
         return obj;
     }
-
+    //采集
     public void OnResourceCollected(ResourceType type, GameObject collectedObj)
     {
         activeResources[type].Remove(collectedObj);
         StartCoroutine(RespawnAfterDelay(type));
     }
-
+    //协程 被采集后生成新资源
     System.Collections.IEnumerator RespawnAfterDelay(ResourceType type)
     {
         yield return new WaitForSeconds(respawnDelay);
@@ -94,18 +94,24 @@ public class ResourceSpawner : MonoBehaviour
         GameObject prefab = GetPrefabByType(type);
         SpawnResource(prefab, type);
     }
-
-    GameObject GetPrefabByType(ResourceType type)
+     //种类判断
+    public ResourceData GetResourceData(ResourceType type)
     {
         switch (type)
         {
-            case ResourceType.Wood: return woodPrefab;
-            case ResourceType.Iron: return ironPrefab;
-            case ResourceType.MagicDust: return magicPrefab;
+            case ResourceType.Wood: return woodData;
+            case ResourceType.Iron: return ironData;
+            case ResourceType.MagicDust: return magicDustData;
             default: return null;
         }
     }
-
+   
+    public GameObject GetPrefabByType(ResourceType type)
+    {
+        ResourceData data = GetResourceData(type);
+        return data != null ? data.prefab : null;
+    }
+    //随机地点生成
     Vector3 GetRandomPosition()
     {
         float x = Random.Range(-spawnArea.x, spawnArea.x);
